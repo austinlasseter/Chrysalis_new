@@ -1,0 +1,30 @@
+extends layout
+
+block content
+	.site-wrapper
+		.site-wrapper-inner
+			.container
+				.masthead.clearfix
+					.container.inner
+						h1.masthead-brand Chrysalis
+						nav
+							ul.nav.masthead-nav
+								
+				.inner.cover
+					h1.cover-heading Everyone knows they need a budget.
+
+					form.create-new-user(action='/new-user', method='post')
+						div
+							label First Name:
+							input(type='text', name='firstName')
+						div
+							label Last Name:
+							input(type='text', name='lastName')
+						div
+							label Username:
+							input(type='text', name='username')
+						div
+							label Password (min 10 characters):
+							input(type='password', name='password')
+						div
+							input(type='submit', value='Sign Up')

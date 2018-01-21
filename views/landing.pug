@@ -1,0 +1,36 @@
+extends layout
+
+block content
+	.site-wrapper
+		.site-wrapper-inner
+			.container
+				.masthead.clearfix
+					.container.inner
+						h3.masthead-brand Chrysalis
+						nav
+							ul.nav.masthead-nav
+				.inner.cover
+					h1.cover-heading Everyone knows they need a budget.
+					p.lead
+						| But sticking to that budget is a different story. Chrysalis makes sticking to your budget as easy as possible.
+					.logo login
+						form.login(action='/', method='post')
+							div
+								label Username:  
+								input(type='text', name='username')
+							div
+								label Password:  
+								input(type='password', name='password')
+							div
+								input(type='submit', value='login')
+							.or-create-new
+								p
+								| new user? 
+								a(href='./new-user') create new account
+
+
+
+
+
+
+
