@@ -1,32 +1,62 @@
-extends layout
+extends homepageLayout
 
 block content
-	.site-wrapper
-		.site-wrapper-inner
+	#page-top
+	// Navigation
+	nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+		.container
+			a.navbar-brand.js-scroll-trigger(href='#page-top') Chrysalis
+			button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+				| Menu
+				i.fa.fa-bars
+		#navbarResponsive.collapse.navbar-collapse
+			ul.navbar-nav.ml-auto
+				li.nav-item
+				a.nav-link.js-scroll-trigger(href='#about') About
+				li.nav-item
+				a.nav-link.js-scroll-trigger(href='#login') Log In
+	// Intro Header
+	header.masthead
+		.intro-body
 			.container
-				.masthead.clearfix
-					.container.inner
-						h3.masthead-brand Chrysalis
-						nav
-							ul.nav.masthead-nav
-				.inner.cover
-					h1.cover-heading Everyone knows they need a budget.
-					p.lead
-						| But sticking to that budget is a different story. Chrysalis makes sticking to your budget as easy as possible.
-					.logo login
-						form.login(action='/', method='post')
-							div
-								label Username:  
-								input(type='text', name='username')
-							div
-								label Password:  
-								input(type='password', name='password')
-							div
-								input(type='submit', value='login')
-							.or-create-new
-								p
-								| new user? 
-								a(href='./new-user') create new account
+				.row
+					.col-lg-8.mx-auto
+					h1.brand-heading Chrysalis
+					h4.intro-text Everyone knows they need a budget.
+					p But sticking to that budget is a different story. Chrysalis makes sticking to your budget as easy as possible.
+					a.btn.btn-circle.js-scroll-trigger(href='#about')
+					i.fa.fa-angle-double-down.animated
+	// LogIn Section
+	section#login.download-section.content-section.text-center
+		.container
+			.col-lg-8.mx-auto
+				h2 Log In
+				form.login(action='/', method='post')
+					div
+						label Username:  
+						input(type='text', name='username')
+					div
+						label Password:  
+						input(type='password', name='password')
+					div
+						input(type='submit', value='login')
+					.or-create-new
+						p
+						| new user? 
+						a(href='./new-user') create new account
+	// About Section
+	section#about.content-section.text-center
+		.container
+			.row
+				.col-lg-8.mx-auto
+					h2 About Chrysalis
+					p
+					| Chrysalis is a better budget app.
+	// Footer
+	footer
+		.container.text-center
+			p Copyright © Chrysalis 2018
+		
 
 
 

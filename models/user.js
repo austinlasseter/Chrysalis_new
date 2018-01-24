@@ -1,6 +1,8 @@
 'use strict';
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+// const {TransactionSchema} = require('./transactions');
+
 
 mongoose.Promise = global.Promise;
 
@@ -16,6 +18,7 @@ const UserSchema = mongoose.Schema({
     },
     firstName: {type: String, default: ''},
     lastName: {type: String, default: ''}
+    // transactions: [TransactionSchema]
 });
 
 UserSchema.methods.serialize = function() {

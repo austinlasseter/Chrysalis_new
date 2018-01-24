@@ -1,10 +1,13 @@
 'use strict';
 var express = require('express');
+var multer = require('multer');
 var router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const config = require('../config');
+var csv = require('fast-csv');
 
+var {Transaction} = require('../models/transactions');
 const {User} = require('../models/user');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -49,20 +52,22 @@ router.get('/', function(req, res, next) { //gives the homepage
 
 // GET budget dashboard page
 router.get('/dashboard', function(req, res, next) {
-	   //  if(!req.user){
-    //     res.redirect('/')
-    // } else {
+  console.log('this is dashboard, req');
+  console.log(req);
+	    if(!req.user){
+        res.redirect('/')
+    } else {
         res.render('dashboard');
-  // }
+  }
 });
 
 // GET transactions page
 router.get('/transactions', function(req, res, next) {
-	   //  if(!req.user){
-    //     res.redirect('/')
-    // } else {
+	    if(!req.user){
+        res.redirect('/')
+    } else {
         res.render('transactions');
-  // }
+  }
 });
 
 // GET upload page
@@ -84,7 +89,35 @@ router.get('/new-user', function(req, res, next) {
 router.post('/', passport.authenticate('local', { 
 	failureRedirect: '/' }), 
 function(req, res) {
+  console.log('inside login post');
     res.redirect('/dashboard');
+});
+
+// POST: UPLOAD TRANSACTIONS FILE
+router.post('/upload', upload.single('transaction'), function(req, res) {
+  // multer adds the file to req.
+  if (!req.files)
+        return res.status(400).send('No files were uploaded.');
+  var transactionFile = req.files.file; //get the actual file
+  var transactions = [];    
+  // csv
+  //  .fromString(transactionFile.data.toString(), {
+  //      headers: true,
+  //      ignoreEmpty: true
+  //  })
+   .on("data", function(data){
+       data['_id'] = new mongoose.Types.ObjectId();
+        
+       authors.push(data);
+   })
+   .on("end", function(){
+       Transaction.create(transactions, function(err, documents) {
+          if (err) throw err;
+       });
+        
+       res.send(transactions.length + ' transactions have been successfully uploaded.');
+   });
+  console.log('inside upload');
 });
 
 // POST: CREATE NEW USER

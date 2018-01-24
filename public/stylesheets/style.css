@@ -1,7 +1,6 @@
 body {
   font-family: 'Raleway', sans-serif;
-  color: white;
-  background: url(../images/chrysalisHomepage3.png) no-repeat center center fixed; 
+  
 }
 
 a {
@@ -108,15 +107,13 @@ body {
   -o-background-size: cover;
   background-size: cover;
   color: white;
-  background: url(../images/chrysalisHomepage3.png) no-repeat center center fixed; 
+  
 }
 body {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  color: white;
-  background: url(../images/chrysalisHomepage3.png) no-repeat center center fixed; 
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);

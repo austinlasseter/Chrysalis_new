@@ -4,3 +4,8 @@ block content
 	section.upload
 		header Chrysalis
 		div You've successfully hit the upload page. Congrats.
+
+		form(action='/upload', enctype='multipart/form-data', method='post')
+			p Choose a file to upload. Click here to download example template.
+			input#upload-input(type='file', name='uploadFile', accept='*.csv')
+			input(type='submit', value='Upload Transactions CSV')
