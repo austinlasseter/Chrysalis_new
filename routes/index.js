@@ -1,13 +1,17 @@
 'use strict';
 var express = require('express');
 var multer = require('multer');
+var upload = multer({ dest: 'uploads/' })
 var router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const config = require('../config');
-var csv = require('fast-csv');
+// var csv = require('fast-csv');
+var fs = require('fs'); 
+var csv = require('csv-parser');
 
 var {Transaction} = require('../models/transactions');
+
 const {User} = require('../models/user');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -93,32 +97,56 @@ function(req, res) {
     res.redirect('/dashboard');
 });
 
+var type = upload.single('csvFile');
 // POST: UPLOAD TRANSACTIONS FILE
-router.post('/upload', upload.single('transaction'), function(req, res) {
-  // multer adds the file to req.
-  if (!req.files)
+router.post('/upload', type, function(req, res) {
+  console.log(req.file);
+  if (!req.file)
         return res.status(400).send('No files were uploaded.');
-  var transactionFile = req.files.file; //get the actual file
-  var transactions = [];    
-  // csv
-  //  .fromString(transactionFile.data.toString(), {
-  //      headers: true,
-  //      ignoreEmpty: true
-  //  })
-   .on("data", function(data){
-       data['_id'] = new mongoose.Types.ObjectId();
-        
-       authors.push(data);
-   })
-   .on("end", function(){
-       Transaction.create(transactions, function(err, documents) {
-          if (err) throw err;
-       });
-        
-       res.send(transactions.length + ' transactions have been successfully uploaded.');
-   });
-  console.log('inside upload');
+
+    fs.createReadStream(req.file.path)
+  .pipe(csv())
+  .on('data', function (data) {
+    console.log(data);
+  let results = {};
+  results.transdate = data['Post Date'];
+  console.log('this is transdate:', results.transdate);
+  results.description = data['Description'];
+  results.debit = data['debit'];
+  results.credit = data['credit'];
+  results.balance = data['balance'];
+  results.category = data['category'];
+  console.log('these are the results:', results);
+
+    Transaction.find(results)
+    .count()
+    .then(count => {
+      if (count > 0) {
+        // That transaction was already in the db
+        return Promise.reject({
+          code: 422,
+          reason: 'ValidationError',
+          message: 'transaction already in db',
+          location: 'transaction'
+        });
+      }
+      // If that transaction isn't in the db, then:
+      return Transaction;
+    })
+
+    .then( transaction => {
+      console.log('that transaction was new, so we will add it');
+      return Transaction.create({
+        results
+        // .transdate, results.description, results.debit, results.credit, results.balance, results.category
+      });
+    })
+  }) // closes on
+  .on('end', function () {
+    console.log('at the end');
+})
 });
+
 
 // POST: CREATE NEW USER
 router.post('/new-user', jsonParser, (req, res) => {

@@ -4,19 +4,19 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const TransactionSchema = mongoose.Schema({
-    date: {type: Date, required: true, unique: true},
+const TransactionSchema = mongoose.Schema();
+TransactionSchema.add({
+    transdate: {type: String, required: true},
     description: {type: String, required: true},
     debit: {type: Number, required: true},
     credit: {type: Number, required: true},
     balance: {type: Number, required: true},
-    category {type: String, default: ''},
-
+    category: {type: String, default: null},
 });
 
 TransactionSchema.methods.serialize = function() {
     return {
-        date: this.date|| '',
+        transdate: this.transdate|| '',
         description: this.description || '',
         debit: this.debit || '',
         credit: this.credit || '',

@@ -1,7 +1,7 @@
 'use strict';
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-// const {TransactionSchema} = require('./transactions');
+const {TransactionSchema} = require('./transactions');
 
 
 mongoose.Promise = global.Promise;
@@ -17,8 +17,8 @@ const UserSchema = mongoose.Schema({
         required: true
     },
     firstName: {type: String, default: ''},
-    lastName: {type: String, default: ''}
-    // transactions: [TransactionSchema]
+    lastName: {type: String, default: ''},
+    // transactions: [TransactionSchema] //currently throwing the error "Invalid value for schema Array path `' + prefix + key + '`"
 });
 
 UserSchema.methods.serialize = function() {
