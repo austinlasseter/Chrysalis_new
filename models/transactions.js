@@ -4,15 +4,15 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const TransactionSchema = mongoose.Schema();
-TransactionSchema.add({
+const TransactionSchema =  mongoose.Schema({
     transdate: {type: String, required: true},
     description: {type: String, required: true},
-    debit: {type: Number, required: true},
-    credit: {type: Number, required: true},
+    debit: {type: Number},
+    credit: {type: Number},
     balance: {type: Number, required: true},
     category: {type: String, default: null},
 });
+
 
 TransactionSchema.methods.serialize = function() {
     return {
@@ -38,6 +38,9 @@ TransactionSchema.methods.addCategory = function(Transaction, category) {
 };
 
 
-const Transaction = mongoose.model('Transaction', TransactionSchema);
+// const Transaction = mongoose.model('Transaction', TransactionSchema);
 
-module.exports = {Transaction};
+module.exports = TransactionSchema;
+
+
+

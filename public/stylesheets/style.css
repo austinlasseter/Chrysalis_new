@@ -15,18 +15,16 @@ a:hover {
 header {
   position: fixed;
   height: 60px;
-  background-color: #DCD0C0; 
+  background-color: black; 
   width: 100%;
   top: 0px;
+  left: 0;
   font-family: 'Oswald', sans-serif;
-  color: #373737;
-  font-size: 40px;
-  text-align: center;
-    z-index: 100;
-}
-
-pre {
   color: white;
+  text-transform: uppercase;
+  font-size: 40px;
+  text-align: left;
+  z-index: 100;
 }
 
 .landing {
@@ -38,6 +36,29 @@ pre {
   font-size: 30px;
   font-weight: 900;
   color: black;
+}
+
+.transaction-main { /*defines the main section of the transactions page*/
+  margin-top: 60px;
+}
+.transactions-table {
+  margin-left: 300px;
+  padding: 10px;
+}
+
+.faq-main {
+  margin-top: 60px;
+  text-align: left;
+}
+
+.create-bar {
+  margin-left: 290px;
+  width: 100%;
+  background: grey;
+}
+
+.dashboard-main { /*defines the main section of the transactions page*/
+  margin-top: 60px;
 }
 
 .logo {
@@ -60,16 +81,22 @@ pre {
 }
 
 .side-bar {
-  width:100%;
-  overflow:hidden
+  height: 100%;
+  width: 300px;
+  position: fixed; /*Stay in place on the scroll*/
+  z-index: 1; /*Stay on top*/
+  left: 0;
+  /*distance from top is currently defined in section for each page*/
+  background-color: black; /*Black*/
+/*  color: white;*/
+  overflow-x:hidden /*Disables horizontal scroll*/
+  padding-top: 20px;
 }
 
 .side-bar-item {
-  padding:8px 16px;
-  float:left;
-  width:auto;
-  border:none;
-  outline:none;
+  padding: 6px 8px 6px 16px;
+  /*text-decoration: none;*/ /*gets no underline on link*/
+  color: white;
   display:block
 }
 
@@ -106,7 +133,6 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  color: white;
   
 }
 body {
@@ -114,7 +140,7 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  color: #fff;
+  /*color: #fff;*/
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }

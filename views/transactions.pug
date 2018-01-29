@@ -19,12 +19,17 @@ block content
 				th Category
 				th Outflow
 				th Inflow
-			tr
-				td 12/19/2017
-				td Harris Teeter
-				td Groceries
-				td 32.40
-				td 
+			each transaction in transactions
+				tr 
+					td #{transaction.transdate}
+					td #{transaction.description}
+					td(input(type='text')
+						contenteditable='true'
+						onClick(giveTransactionid(#{transaction._id}))) #{transaction.category}
+					td #{transaction.debit}
+					td #{transaction.credit}
+
+	script(src='javascripts/transactionProcessing.js')
 			  
 
 

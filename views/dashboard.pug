@@ -11,7 +11,7 @@ block content
 			a.side-bar-item(href='/transactions') Go to Transactions
 			a.side-bar-item(href='/faq') Questions? Go to FAQ.
 		div.create-bar 
-			a(href='#') Create a Category 
+			button.create-category-button(type='button') Create a Category
 		//- this will just add a blank row to the table, and that row will be editable
 
 		//- FIRST: for each category, get the budget, activity, available
@@ -25,8 +25,10 @@ block content
 							//-    == budgeted - activity
 
 			tr
-				td Housing
-				td 1200
+				td(input(type='text')) Housing
+				td(input(type='text')) 1200
 							//- Category and budgeted should be editable
 				td 1050
 				td 50
+
+	//- include (./includes/dashboardInclude.pug)

@@ -56,30 +56,51 @@ router.get('/', function(req, res, next) { //gives the homepage
 
 // GET budget dashboard page
 router.get('/dashboard', function(req, res, next) {
-  console.log('this is dashboard, req');
-  console.log(req);
+
 	    if(!req.user){
         res.redirect('/')
     } else {
-        res.render('dashboard');
+      console.log('this is 64');
+        console.log(req.user);
+         User.findById(req.user.id, function (err, user) {
+          console.log('this is line 66');
+        console.log(user);
+        });
+         res.render('dashboard');
+
   }
 });
 
 // GET transactions page
 router.get('/transactions', function(req, res, next) {
-	    if(!req.user){
-        res.redirect('/')
+    console.log(req.user.transactions);
+
+
+
+    if(!req.user){
+      res.redirect('/')
     } else {
-        res.render('transactions');
+       res.render('transactions', {
+        transactions: req.user.transactions
+       });
   }
 });
 
 // GET upload page
 router.get('/upload', function(req, res, next) {
-	   //  if(!req.user){
+	    if(!req.user){
+        res.redirect('/')
+    } else {
+        res.render('upload');
+  }
+});
+
+router.get('/faq', function(req, res, next) {
+
+     //  if(!req.user){
     //     res.redirect('/')
     // } else {
-        res.render('upload');
+         res.render('faq');
   // }
 });
 
@@ -100,7 +121,14 @@ function(req, res) {
 var type = upload.single('csvFile');
 // POST: UPLOAD TRANSACTIONS FILE
 router.post('/upload', type, function(req, res) {
+  User.findById(req.user._id, function (err, user) {
+        console.log(user)
+    });
+  console.log('the following is req.user from line 106:')
+  console.log(req.user);
   console.log(req.file);
+
+
   if (!req.file)
         return res.status(400).send('No files were uploaded.');
 
@@ -112,14 +140,21 @@ router.post('/upload', type, function(req, res) {
   results.transdate = data['Post Date'];
   console.log('this is transdate:', results.transdate);
   results.description = data['Description'];
-  results.debit = data['debit'];
-  results.credit = data['credit'];
-  results.balance = data['balance'];
+  results.debit = data['Debit'];
+  results.credit = data['Credit'];
+  results.balance = data['Balance_anon'];
   results.category = data['category'];
   console.log('these are the results:', results);
 
-    Transaction.find(results)
-    .count()
+    User.find({transactions: { //NOTE: querying subdocs like this requires an *exact* match, including order
+      transdate: results.transdate,
+      description: results.description,
+      debit: results.debit,
+      credit: results.credit,
+      balance: results.balance,
+      category: results.category,
+    }})
+    .count() //check if .count() works
     .then(count => {
       if (count > 0) {
         // That transaction was already in the db
@@ -131,20 +166,28 @@ router.post('/upload', type, function(req, res) {
         });
       }
       // If that transaction isn't in the db, then:
-      return Transaction;
+      return results
     })
 
-    .then( transaction => {
+    .then( results => {
       console.log('that transaction was new, so we will add it');
-      return Transaction.create({
-        results
-        // .transdate, results.description, results.debit, results.credit, results.balance, results.category
-      });
-    })
-  }) // closes on
+      req.user.transactions.push(results);
+      // req.user.save();
+      req.user.save(function (err) {
+        if (err) return handleError(err)
+        console.log('Success!');
+    });
+
+    }) //closes the results -> push
+    .then( results => {console.log('now the results have been pushed, lets look at user and user.transactions');
+      console.log(req.user);
+      console.log(req.user.transactions);
+  });
+  }) // closes the on
   .on('end', function () {
     console.log('at the end');
-})
+    res.redirect('transactions');
+  })
 });
 
 
