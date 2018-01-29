@@ -1,13 +1,32 @@
 extends layout
 
-block content
-	section.transactions
-		header Chrysalis
-		div You've successfully hit the transactions page. Congrats.
+block content	
 
-		div
-			h3.side-bar-item Jan 2018
-				a.side-bar-item(href='/dashboard') Back to Budget
-				a.side-bar-item(href='/upload') Upload some transactions
-				p.transactions Questions?
-				a.side-bar-item(href='/faq') Go to FAQ.
+	header Chrysalis
+	div.gold-line
+
+	section.transaction-main
+		div.side-bar
+			a.side-bar-item(href='/dashboard') Back to Budget
+			a.side-bar-item(href='/faq') Questions? Go to FAQ.
+
+		div.create-bar 
+			a(href='/upload') Upload Transactions
+		table.transactions-table
+			tr
+				th Date
+				th Payee
+				th Category
+				th Outflow
+				th Inflow
+			tr
+				td 12/19/2017
+				td Harris Teeter
+				td Groceries
+				td 32.40
+				td 
+			  
+
+
+
+

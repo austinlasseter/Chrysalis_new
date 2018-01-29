@@ -1,10 +1,32 @@
 extends layout
 
 block content
-	section.dashboard
-		header Chrysalis
-		div You've successfully hit the budget dashboard page. Congrats.
 
-		div.sidebar 
-			h3.side-bar-item Jan 2018
-				a.side-bar-item(href='/transactions') Go to Transactions
+	header Chrysalis
+
+
+	section.dashboard-main
+		div.side-bar
+			p.side-bar-item January 2018
+			a.side-bar-item(href='/transactions') Go to Transactions
+			a.side-bar-item(href='/faq') Questions? Go to FAQ.
+		div.create-bar 
+			a(href='#') Create a Category 
+		//- this will just add a blank row to the table, and that row will be editable
+
+		//- FIRST: for each category, get the budget, activity, available
+		table.transactions-table
+			tr
+				th Category
+				th Budgeted
+				th Activity 
+							//- the sum of all transactions in that month with that category
+				th Available
+							//-    == budgeted - activity
+
+			tr
+				td Housing
+				td 1200
+							//- Category and budgeted should be editable
+				td 1050
+				td 50
