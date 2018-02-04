@@ -57,26 +57,28 @@ router.get('/', function(req, res, next) { //gives the homepage
 // GET budget dashboard page
 router.get('/dashboard', function(req, res, next) {
 
+  console.log(req.user.categories);
 	    if(!req.user){
         res.redirect('/')
     } else {
-      console.log('this is 64');
-        console.log(req.user);
-         User.findById(req.user.id, function (err, user) {
-          console.log('this is line 66');
-        console.log(user);
-        });
-         res.render('dashboard');
+      //User.findById(req.user.id, function (err, user) {
+        // console.log('this is user');
+        // console.log(User);
+        // console.log('this is req.user');
+        // console.log(req.user);
+        console.log('this is categories');
+        console.log(req.user.categories);
+      // });
+      res.render('dashboard', {
+        categories: req.user.categories
+      }); //end of dashboard
 
-  }
-});
+  } // end of else
+}); //end of GET DASHBOARD
 
 // GET transactions page
 router.get('/transactions', function(req, res, next) {
-    console.log(req.user.transactions);
-
-
-
+    // console.log(req.user.transactions);
     if(!req.user){
       res.redirect('/')
     } else {
@@ -110,42 +112,47 @@ router.get('/new-user', function(req, res, next) {
   res.render('new-user', { title: 'Express' });
 });
 
+
+
 // POST: LOGIN
 router.post('/', passport.authenticate('local', { 
 	failureRedirect: '/' }), 
 function(req, res) {
-  console.log('inside login post');
-    res.redirect('/dashboard');
+  // console.log('inside login post');
+  // console.log(req.user);
+  // console.log(req.user.categories);
+  res.redirect('/dashboard');
 });
 
 var type = upload.single('csvFile');
+
 // POST: UPLOAD TRANSACTIONS FILE
+let requser;
 router.post('/upload', type, function(req, res) {
+  requser = req.user;
   User.findById(req.user._id, function (err, user) {
-        console.log(user)
+        // console.log(user)
     });
-  console.log('the following is req.user from line 106:')
-  console.log(req.user);
-  console.log(req.file);
+  // console.log('the following is req.file from line 106:')
+  // console.log(req.user);
+  // console.log(req.file);
+  // console.log('this is user, line 137 in index');
+  // console.log(user);
 
-
-  if (!req.file)
-        return res.status(400).send('No files were uploaded.');
-
-    fs.createReadStream(req.file.path)
+  if (!req.file) {
+    // if there's no file, just quit now
+    return res.status(400).send('No files were uploaded.');
+   }
+  fs.createReadStream(req.file.path)
   .pipe(csv())
-  .on('data', function (data) {
-    console.log(data);
-  let results = {};
-  results.transdate = data['Post Date'];
-  console.log('this is transdate:', results.transdate);
-  results.description = data['Description'];
-  results.debit = data['Debit'];
-  results.credit = data['Credit'];
-  results.balance = data['Balance_anon'];
-  results.category = data['category'];
-  console.log('these are the results:', results);
-
+  .on('data', function (data) { //
+    let results = {};
+    results.transdate = data['Post Date'];
+    results.description = data['Description'];
+    results.debit = data['Debit'];
+    results.credit = data['Credit'];
+    results.balance = data['Balance_anon'];
+    results.category = data['category'];
     User.find({transactions: { //NOTE: querying subdocs like this requires an *exact* match, including order
       transdate: results.transdate,
       description: results.description,
@@ -168,31 +175,33 @@ router.post('/upload', type, function(req, res) {
       // If that transaction isn't in the db, then:
       return results
     })
-
     .then( results => {
       console.log('that transaction was new, so we will add it');
       req.user.transactions.push(results);
-      // req.user.save();
-      req.user.save(function (err) {
-        if (err) return handleError(err)
-        console.log('Success!');
-    });
-
-    }) //closes the results -> push
-    .then( results => {console.log('now the results have been pushed, lets look at user and user.transactions');
       console.log(req.user);
-      console.log(req.user.transactions);
-  });
-  }) // closes the on
+      return 
+    }) //closes the results -> push
+    .then(  results => {
+      req.user.save(function (err) {
+
+        if (err) console.log(err)
+      });
+    })
+  }) // closes the on data
   .on('end', function () {
+     req.user.save(function (err) {
+      console.log(req.user);
+      if (err) console.log(err)
+    });
     console.log('at the end');
     res.redirect('transactions');
   })
-});
+}); // end of post
 
 
 // POST: CREATE NEW USER
 router.post('/new-user', jsonParser, (req, res) => {
+
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
   console.log('we are in the create new user post');
@@ -298,6 +307,41 @@ router.post('/new-user', jsonParser, (req, res) => {
         lastName
       });
     })
+    .then (function(user) {
+      //intialize with categories: 
+      var initialCategoryList = ['housing', 'groceries', 'transportation', 'clothes', 'giving', 'books']
+
+      initialCategoryList.forEach(function(category) {
+        var category = {categoryName: category,
+                      budgeted: 0,
+                      activity: 0,
+                      available: 0}
+        console.log(category);
+        user.categories.push(category);
+        
+        }); 
+        user.save(function (err) {
+          if (err) console.log(err);
+          //console.log('Success!');
+          })
+          // end of 'then' for initializing categories
+      // for(var i = 0; i < initialCategoryList.length; i++) {
+      //   console.log('this is i in category array');
+      //   console.log(i);
+      //   var category = {categoryName: initialCategoryList.length[i],
+      //                 budget: 0,
+      //                 activity: 0,
+      //                 available: 0}
+      //   user.categories.push(category);
+      //   user.save(function (err) {
+      //     if (err) console.log(err);
+      //     //console.log('Success!');
+      //   })
+      // } // end of for var
+
+       
+      return
+    }) // end of then
     .then( function() {
     	console.log('successful creation of user');
     	res.redirect('/');

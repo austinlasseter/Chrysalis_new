@@ -2,7 +2,8 @@ extends layout
 
 block content	
 
-	header Chrysalis
+	header 
+		.brand-heading Chrysalis
 	div.gold-line
 
 	section.transaction-main
@@ -23,9 +24,14 @@ block content
 				tr 
 					td #{transaction.transdate}
 					td #{transaction.description}
-					td(input(type='text')
-						contenteditable='true'
-						onClick(giveTransactionid(#{transaction._id}))) #{transaction.category}
+					td
+						select
+							each category in categories
+								option(value= '#{category}' ) #{category}
+					//- #{transaction.category}
+					//- (input(type='text')
+					//- 	contenteditable='true'
+					//- 	onClick(giveTransactionid(#{transaction._id}))) 
 					td #{transaction.debit}
 					td #{transaction.credit}
 

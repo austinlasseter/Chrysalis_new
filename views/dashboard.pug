@@ -2,7 +2,8 @@ extends layout
 
 block content
 
-	header Chrysalis
+	header 
+		.brand-heading Chrysalis
 
 
 	section.dashboard-main
@@ -11,11 +12,13 @@ block content
 			a.side-bar-item(href='/transactions') Go to Transactions
 			a.side-bar-item(href='/faq') Questions? Go to FAQ.
 		div.create-bar 
-			button.create-category-button(type='button') Create a Category
+			button.create-category-button(
+				type='button' 
+				onclick="addCategoryRow()") Create a Category
 		//- this will just add a blank row to the table, and that row will be editable
 
 		//- FIRST: for each category, get the budget, activity, available
-		table.transactions-table
+		table.budget-table
 			tr
 				th Category
 				th Budgeted
@@ -23,12 +26,19 @@ block content
 							//- the sum of all transactions in that month with that category
 				th Available
 							//-    == budgeted - activity
+			each category in categories
+				tr.category-row 
 
-			tr
-				td(input(type='text')) Housing
-				td(input(type='text')) 1200
-							//- Category and budgeted should be editable
-				td 1050
-				td 50
+					td(contenteditable='true' type='text') #{category.categoryName}
+						//- ultimately this should be editable and allow for a category PUT
+					td(contenteditable='true' type='text') #{category.budgeted}
+					td #{category.activity}
+					//- (input(type='text')
+					//- 	contenteditable='true'
+					//- 	onClick(giveTransactionid(#{transaction._id}))) 
+					td #{category.available}
+					
 
-	//- include (./includes/dashboardInclude.pug)
+	script(src='http://code.jquery.com/jquery-3.3.1.js', integrity='sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=', crossorigin='anonymous')
+	script(src='javascripts/transactionProcessing.js')
+	

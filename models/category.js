@@ -21,6 +21,6 @@ CategorySchema.methods.serialize = function() {
     };
 };
 
-const Category = mongoose.model('Category', CategorySchema);
+//const Category = mongoose.model('Category', CategorySchema);
 
-module.exports = Category;
+module.exports = CategorySchema;
