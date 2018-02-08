@@ -5,55 +5,68 @@ var upload = multer({ dest: 'uploads/' })
 var router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-const Category = require('../../models/category'); //how do I give the right path??
+const Category = require('../../models/category'); 
 
 const config = require('../../config');
 
 //POST: create new category
-
 router.post('/categories', jsonParser, (req, res) => {
-  console.log('this is req.body');
-  console.log(req.body);
-  // console.log('categories POST');
-  // const requiredFields = ['categoryName'];
   console.log('we are in the create new category post');
-	// var category = new category({categoryName: ['categoryName'],
-  //                     budget: 0,
-  //                     activity: 0,
-  //                     available: 0});
 
-        req.user.categories.push(req.body);
-        req.user.save(function (err) {
-          if (err) console.log(err);
-          //console.log('Success!');
+  req.user.categories.push(req.body);
+  req.user.save(function (err) {
+    if (err) console.log(err);
         })
-
-  // var Category = mongoose.model('Category', CategorySchema);
-  // req.user.category.create({
-  //   var data = req.body;
-  // req.user.categories.create(data, 
-  //   function (err) {
-  //     if (err) console.log(err);
-  //   })
-  // .then(function() {
-  //   console.log('successful creation of category')
-  //   res.status(201);
-  // })
 res.status(201);
 }) //end of new category POST
 
 
-router.put('/categories', jsonParser, (req, res) => {
+router.put('/categories/budget', jsonParser, (req, res) => { // TO DO
   //update a category to have a 'budgeted' amount
   // also will likely do the calculation of 'activity' within this post
-  console.log('you are in the PUT for category updates');
+  console.log('you are in the PUT for category-budget updates (in the dashboard page)');
   //console.log(req.user);
   req.user.categories.update({
     //first the query
-    categoryName: this.parent().categoryName // ?? how do I actually get this??
+
+    categoryName: this.closest('tr').categoryName.val() // ?? how do I actually get this??
     },
     {// then the update
     budgeted: $(".category-row").budgeted.value // ?? how do I actually get this?? And it has to come from a dropdown of available values.
+  });
+});
+
+
+
+
+
+
+
+
+
+router.put('/categories/categoryName', jsonParser, (req, res) => { // TO DO
+  //updates the category Name.
+  // this also must propagate the name change to all transactions with that name change
+  req.user.categories.update({
+    //first the query
+
+    categoryName: this.closest('tr').categoryName.val() // ?? how do I actually get this??
+    },
+    {// then the update
+    //budgeted: $(".category-row").budgeted.value // ?? how do I actually get this?? And it has to come from a dropdown of available values.
+  });
+});
+
+router.delete('/categories/categoryName', jsonParser, (req, res) => { // TO DO
+  //totally deletes the category
+  // this also must propagate the name change to all transactions with that assigned categoryName
+  req.user.categories.delete({
+    //first the query
+
+    categoryName: this.closest('tr').categoryName.val() // ?? how do I actually get this??
+    },
+    {// then the update
+    //budgeted: $(".category-row").budgeted.value // ?? how do I actually get this?? And it has to come from a dropdown of available values.
   });
 });
 

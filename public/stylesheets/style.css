@@ -63,6 +63,9 @@ header {
   margin-left: 300px;
   padding: 10px;
 }
+.category-dropdown { /* in transactions page*/
+  width: 25px;
+}
 .budget-table {
   margin-left: 300px;
   padding: 10px;

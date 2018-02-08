@@ -12,7 +12,9 @@ var session = require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+// var api = require('./routes/api');
 var categories = require('./routes/api/categories');
+var transactions = require('./routes/api/transactions');
 
 var app = express();
 const { PORT } = require('./config');
@@ -41,7 +43,8 @@ app.use(passport.session());
 
 app.use('/', index);
 
-app.use('/api', categories);
+app.use('/api/categories', categories);
+app.use('/api/transactions', transactions);
 
 // app.use('/users', users);
 

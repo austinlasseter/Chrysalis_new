@@ -83,7 +83,8 @@ router.get('/transactions', function(req, res, next) {
       res.redirect('/')
     } else {
        res.render('transactions', {
-        transactions: req.user.transactions
+        transactions: req.user.transactions,
+        categories: req.user.categories
        });
   }
 });
@@ -129,6 +130,7 @@ var type = upload.single('csvFile');
 // POST: UPLOAD TRANSACTIONS FILE
 let requser;
 router.post('/upload', type, function(req, res) {
+  let transactionResultsArray = []
   requser = req.user;
   User.findById(req.user._id, function (err, user) {
         // console.log(user)
@@ -177,20 +179,25 @@ router.post('/upload', type, function(req, res) {
     })
     .then( results => {
       console.log('that transaction was new, so we will add it');
-      req.user.transactions.push(results);
-      console.log(req.user);
-      return 
-    }) //closes the results -> push
-    .then(  results => {
-      req.user.save(function (err) {
 
-        if (err) console.log(err)
-      });
-    })
+      // req.user.transactions.push(transactionResultsArray);
+      transactionResultsArray.push(results)
+      // console.log(req.user);
+      return transactionResultsArray
+    }) //closes the results -> push
+    // .then(  results => {
+    //   req.user.save(function (err) {
+
+    //     if (err) console.log(err)
+    //   });
+    // })
   }) // closes the on data
   .on('end', function () {
+    console.log('this is the results array');
+    console.log(transactionResultsArray);
+    req.user.transactions.push(transactionResultsArray);
      req.user.save(function (err) {
-      console.log(req.user);
+      // console.log(req.user);
       if (err) console.log(err)
     });
     console.log('at the end');

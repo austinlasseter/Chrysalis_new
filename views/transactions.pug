@@ -21,13 +21,13 @@ block content
 				th Outflow
 				th Inflow
 			each transaction in transactions
-				tr 
+				tr(data-id=transaction._id)
 					td #{transaction.transdate}
 					td #{transaction.description}
 					td
-						select
+						select.category-dropdown
 							each category in categories
-								option(value= '#{category.categoryName}' ) 
+								option #{category.categoryName} 
 					//- #{transaction.category}
 					//- (input(type='text')
 					//- 	contenteditable='true'
@@ -35,8 +35,9 @@ block content
 					td #{transaction.debit}
 					td #{transaction.credit}
 
+	script(src='http://code.jquery.com/jquery-3.3.1.js', integrity='sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=', crossorigin='anonymous')
 	script(src='javascripts/transactionProcessing.js')
-			  
+			
 
 
 
