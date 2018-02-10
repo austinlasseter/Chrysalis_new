@@ -27,7 +27,7 @@ block content
 				th Available
 							//-    == budgeted - activity
 			each category in categories
-				tr.category-row 
+				tr(data-id=category._id).category-row
 
 					td(contenteditable='true' type='text') #{category.categoryName}
 						//- ultimately this should be editable and allow for a category PUT

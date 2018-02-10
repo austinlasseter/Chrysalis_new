@@ -20,8 +20,7 @@ var Strategy = require('passport-local').Strategy;
 passport.use(new Strategy(
     function(username, password, done) {
         User.findOne({ username: username }, function (err, user) {
-            console.log(user);
-            console.log(err);
+
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
             // return done(null, user);
@@ -56,19 +55,9 @@ router.get('/', function(req, res, next) { //gives the homepage
 
 // GET budget dashboard page
 router.get('/dashboard', function(req, res, next) {
-
-  console.log(req.user.categories);
 	    if(!req.user){
         res.redirect('/')
     } else {
-      //User.findById(req.user.id, function (err, user) {
-        // console.log('this is user');
-        // console.log(User);
-        // console.log('this is req.user');
-        // console.log(req.user);
-        console.log('this is categories');
-        console.log(req.user.categories);
-      // });
       res.render('dashboard', {
         categories: req.user.categories
       }); //end of dashboard
@@ -119,9 +108,7 @@ router.get('/new-user', function(req, res, next) {
 router.post('/', passport.authenticate('local', { 
 	failureRedirect: '/' }), 
 function(req, res) {
-  // console.log('inside login post');
-  // console.log(req.user);
-  // console.log(req.user.categories);
+
   res.redirect('/dashboard');
 });
 

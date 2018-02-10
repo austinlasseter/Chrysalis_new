@@ -41,23 +41,29 @@ $(document).on('keyup', '.new-category', function (e) {
 });
 
 
-
+// UPDATE BUDGET OF CATEGORY ON ENTER
 $(document).on('keyup', '.category-row-budgeted', function (e) {
+	console.log('inside category.budget UPDATE');
 	// for the dashboard page
+	if (e.keyCode == 13) {
+	console.log('inside category.budget UPDATE');
+	console.log($(this));
+	console.log($(this).parent());
 	console.log($('.category-row-budgeted').val());
-    if (e.keyCode == 13) {
-    	console.log($('.category-row-budgeted').val());
-    	//is input empty
-
-        $.ajax({
-			  type: "PUT",
-			  url: 'api/categories/budget',
-			  data: {budgeted: $('.category-row-budgeted').val()
+  //   if (e.keyCode == 13) {
+  //   	console.log($('.category-row-budgeted').val());
+  //   	//is input empty
+  //   	let url = 'api/categories/' + $(this).parent().data('id') + '/budget'
+  //       $.ajax({
+		// 	  type: "PUT",
+		// 	  url: url
+		// 	  data: {budgeted: $('.category-row-budgeted').val()
 			  	
-			  	}, 
-			  dataType: 'json',
-		}); // end of ajax call    
-    } // end of 'if enter'
+		// 	  	}, 
+		// 	  dataType: 'json',
+		// }); // end of ajax call    
+  //   } // end of 'if enter'
+	} // end of if key = 13
 }); // end of document.on
 
 $(document).on('keyup', '.category-row-categoryName', function (e) {
@@ -90,9 +96,40 @@ $('.category-dropdown').change(function() {
 			  type: "PUT",
 			  url: url,
 			  data: { category: 'groceries'}, 
-			  dataType: 'json',			  
+			  dataType: 'json',		
+
 		}); // end of ajax call  
 }); // end of $('.transaction-row-category').change(function() {
+
+
+// on success of updating a transaction's category, re calculate category.activity
+function updateCategoryActivity() {
+	// for each category in user.categories
+		// get a cursor:
+		var cursor = user.categories.find();
+		cursor.each(function(err, category) {
+			// find all transactions with transaction.category = that category
+			user.transactions.find({
+				category: category
+				})
+			// for those transactions, 
+			// SUM all the debits and credits
+			//.aggregate() 
+			activitySum = 102.34 //made up for now
+			// update category.activity
+			category.Update({
+			category.activity = activitySum
+			})
+			
+		})
+	
+	
+	}
+	
+
+}
+
+
 
 // function onStart() {
 //   //calls all initializer functions.

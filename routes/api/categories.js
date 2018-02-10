@@ -21,7 +21,7 @@ res.status(201);
 }) //end of new category POST
 
 
-router.put('/categories/budget', jsonParser, (req, res) => { // TO DO
+router.put('/categories/:id/budget', jsonParser, (req, res) => { // TO DO
   //update a category to have a 'budgeted' amount
   // also will likely do the calculation of 'activity' within this post
   console.log('you are in the PUT for category-budget updates (in the dashboard page)');
