@@ -89,15 +89,15 @@ $('.category-dropdown').change(function() {
 	 $.ajax({
 			  type: "PUT",
 			  url: url,
-			  data: { category: that.val()},
+			  data: { category: 'groceries'}, 
 			  dataType: 'json',			  
 		}); // end of ajax call  
 }); // end of $('.transaction-row-category').change(function() {
 
-function onStart() {
-  //calls all initializer functions.
+// function onStart() {
+//   //calls all initializer functions.
 
-}
+// }
 
-$(onStart);
+// $(onStart);
 
