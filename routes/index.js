@@ -1,7 +1,7 @@
 'use strict';
 var express = require('express');
 var multer = require('multer');
-var upload = multer({ dest: 'uploads/' })
+var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
@@ -21,6 +21,8 @@ passport.use(new Strategy(
     function(username, password, done) {
         User.findOne({ username: username }, function (err, user) {
 
+            console.log(err)
+            console.log(user)
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
             // return done(null, user);
@@ -114,83 +116,134 @@ function(req, res) {
 
 var type = upload.single('csvFile');
 
-// POST: UPLOAD TRANSACTIONS FILE
-let requser;
 router.post('/upload', type, function(req, res) {
-  let transactionResultsArray = []
-  requser = req.user;
-  User.findById(req.user._id, function (err, user) {
-        // console.log(user)
-    });
-  // console.log('the following is req.file from line 106:')
-  // console.log(req.user);
-  // console.log(req.file);
-  // console.log('this is user, line 137 in index');
-  // console.log(user);
+    var resultsArray = [];
+    if (!req.file) {
+        return res.status(400).send('No files were uploaded.');
+    }
 
-  if (!req.file) {
-    // if there's no file, just quit now
-    return res.status(400).send('No files were uploaded.');
-   }
   fs.createReadStream(req.file.path)
-  .pipe(csv())
-  .on('data', function (data) { //
-    let results = {};
-    results.transdate = data['Post Date'];
-    results.description = data['Description'];
-    results.debit = data['Debit'];
-    results.credit = data['Credit'];
-    results.balance = data['Balance_anon'];
-    results.category = data['category'];
-    User.find({transactions: { //NOTE: querying subdocs like this requires an *exact* match, including order
-      transdate: results.transdate,
-      description: results.description,
-      debit: results.debit,
-      credit: results.credit,
-      balance: results.balance,
-      category: results.category,
-    }})
-    .count() //check if .count() works
-    .then(count => {
-      if (count > 0) {
-        // That transaction was already in the db
-        return Promise.reject({
-          code: 422,
-          reason: 'ValidationError',
-          message: 'transaction already in db',
-          location: 'transaction'
-        });
-      }
-      // If that transaction isn't in the db, then:
-      return results
+    .pipe(csv())
+    .on('data', function (data) {
+      var oneRow = {};
+      oneRow.transdate = data['Post Date'];
+      oneRow.description = data['Description'];
+      oneRow.debit = data['Debit'];
+      oneRow.credit = data['Credit'];
+      oneRow.balance = data['Balance_anon'];
+      oneRow.category = data['category'];
+      resultsArray.push(oneRow);
     })
-    .then( results => {
-      console.log('that transaction was new, so we will add it');
+    .on('end', function () {
+        // At this point you have access to all the rows parsed from the file
+        console.log("Parsed the file, Done !");
 
-      // req.user.transactions.push(transactionResultsArray);
-      transactionResultsArray.push(results)
-      // console.log(req.user);
-      return transactionResultsArray
-    }) //closes the results -> push
-    // .then(  results => {
-    //   req.user.save(function (err) {
+        resultsArray.forEach(function (row, currentIndex) {
+            //here you have access to each row in the iteration
+            // this query below isnt working, when we try to find unique trasanctions. FIX IT.
+            User.find({transactions: { transdate: row.transdate,
+                    description: row.description,
+                    debit: row.debit,
+                    credit: row.credit,
+                    balance: row.balance,
+                    category: row.category
+            }})
+            .count()
+            .then(function (count) {
+                console.log(count);
+                // The query should give is a count of 0 only when certain trasactions arent present.
+                if (count == 0) {
+                    req.user.transactions.push(row);
+                    req.user.save(function (err) {
+                        if(err){
+                            res.send(500)
+                        } else {
+                          console.log('Added successfully');
+                          console.log(req.user);
+                          if(resultsArray.length == (currentIndex+1)){
+                              res.status(200).send('Uploaded Successfully!');
+                          }
+                        }
+                    });
 
-    //     if (err) console.log(err)
-    //   });
-    // })
-  }) // closes the on data
-  .on('end', function () {
-    console.log('this is the results array');
-    console.log(transactionResultsArray);
-    req.user.transactions.push(transactionResultsArray);
-     req.user.save(function (err) {
-      // console.log(req.user);
-      if (err) console.log(err)
+
+                }
+            });
+
+        })
     });
-    console.log('at the end');
-    res.redirect('transactions');
-  })
-}); // end of post
+
+});
+
+// POST: UPLOAD TRANSACTIONS FILE
+// let requser;
+//
+// router.post('/upload', type, function(req, res) {
+//   let transactionResultsArray = []
+//   requser = req.user;
+//
+//   User.findById(req.user._id, function (err, user) {
+//         // console.log(user)
+//     });
+//
+//   if (!req.file) {
+//     return res.status(400).send('No files were uploaded.');
+//    }
+//   fs.createReadStream(req.file.path)
+//   .pipe(csv())
+//   .on('data', function (data) { //
+//     console.log(data);
+//     // let result = {};
+//     // result.transdate = data['Post Date'];
+//     // result.description = data['Description'];
+//     // result.debit = data['Debit'];
+//     // result.credit = data['Credit'];
+//     // result.balance = data['Balance_anon'];
+//     // result.category = data['category'];
+//     // console.log(result);
+//     // User.find({transactions: { //NOTE: querying subdocs like this requires an *exact* match, including order
+//     //   transdate: result.transdate,
+//     //   description: result.description,
+//     //   debit: result.debit,
+//     //   credit: result.credit,
+//     //   balance: result.balance,
+//     //   category: result.category,
+//     // }})
+//     // .count() //check if .count() works
+//     // .then(count => {
+//     //   if (count > 0) {
+//     //     // That transaction was already in the db
+//     //     return Promise.reject({
+//     //       code: 422,
+//     //       reason: 'ValidationError',
+//     //       message: 'transaction already in db',
+//     //       location: 'transaction'
+//     //     });
+//     //   }
+//     //   // If that transaction isn't in the db, then:
+//     //   return result
+//     // })
+//     .then( () => {
+//       console.log('that transaction was new, so we will add it');
+//       // req.user.transactions.push(transactionResultsArray);
+//       // transactionResultsArray.push(results)
+//       // console.log(req.user);
+//       // return transactionResultsArray
+//
+//     })
+//   }) // closes the on data
+//   .on('end', function () {
+//     console.log('this is the results array');
+//     console.log(transactionResultsArray);
+//     // req.user.transactions.push(transactionResultsArray);
+//     //  req.user.save(function (err) {
+//     //   // console.log(req.user);
+//     //   if (err) console.log(err)
+//     // });
+//     console.log('at the end');
+//     res.redirect('transactions');
+//   })
+// }); // end of post
 
 
 // POST: CREATE NEW USER

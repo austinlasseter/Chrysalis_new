@@ -103,31 +103,31 @@ $('.category-dropdown').change(function() {
 
 
 // on success of updating a transaction's category, re calculate category.activity
-function updateCategoryActivity() {
-	// for each category in user.categories
-		// get a cursor:
-		var cursor = user.categories.find();
-		cursor.each(function(err, category) {
-			// find all transactions with transaction.category = that category
-			user.transactions.find({
-				category: category
-				})
-			// for those transactions, 
-			// SUM all the debits and credits
-			//.aggregate() 
-			activitySum = 102.34 //made up for now
-			// update category.activity
-			category.Update({
-			category.activity = activitySum
-			})
-			
-		})
-	
-	
-	}
+// function updateCategoryActivity() {
+// 	// for each category in user.categories
+// 		// get a cursor:
+// 		var cursor = user.categories.find();
+// 		cursor.each(function(err, category) {
+// 			// find all transactions with transaction.category = that category
+// 			user.transactions.find({
+// 				category: category
+// 				})
+// 			// for those transactions,
+// 			// SUM all the debits and credits
+// 			//.aggregate()
+// 			activitySum = 102.34 //made up for now
+// 			// update category.activity
+// 			category.Update({
+// 			category.activity = activitySum
+// 			})
+//
+// 		})
+//
+//
+// 	}
 	
 
-}
+// }
 
 
 
