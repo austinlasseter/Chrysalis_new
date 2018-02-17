@@ -24,10 +24,10 @@ block content
 				tr(data-id=transaction._id)
 					td #{transaction.transdate}
 					td #{transaction.description}
-					td
-						select.category-dropdown
-							each category in categories
-								option #{category.categoryName} 
+					td.transaction-table-category 
+							select.category-dropdown
+								each category in categories
+									option #{category.categoryName} 
 					//- #{transaction.category}
 					//- (input(type='text')
 					//- 	contenteditable='true'

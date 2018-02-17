@@ -31,7 +31,9 @@ block content
 
 					td(contenteditable='true' type='text') #{category.categoryName}
 						//- ultimately this should be editable and allow for a category PUT
-					td(contenteditable='true' type='text' class='.category-row-budgeted') #{category.budgeted}
+					td
+						input(type='text' class='category-row-budgeted hidden') 
+						span.category-budget-span #{category.budgeted}
 					td #{category.activity}
 					//- (input(type='text')
 					//- 	contenteditable='true'

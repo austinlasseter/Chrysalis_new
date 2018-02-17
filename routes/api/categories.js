@@ -10,7 +10,7 @@ const Category = require('../../models/category');
 const config = require('../../config');
 
 //POST: create new category
-router.post('/categories', jsonParser, (req, res) => {
+router.post('/', jsonParser, (req, res) => {
   console.log('we are in the create new category post');
 
   req.user.categories.push(req.body);
@@ -21,7 +21,7 @@ res.status(201);
 }) //end of new category POST
 
 
-router.put('/categories/:id/budget', jsonParser, (req, res) => { // TO DO
+router.put('/:id/budget', jsonParser, (req, res) => { // TO DO
   //update a category to have a 'budgeted' amount
   // also will likely do the calculation of 'activity' within this post
   console.log('you are in the PUT for category-budget updates (in the dashboard page)');
@@ -37,7 +37,30 @@ router.put('/categories/:id/budget', jsonParser, (req, res) => { // TO DO
 });
 
 
+router.put('/', jsonParser, (req, res) => {
+  //on success of updating a transaction's category, re calculate category.activity
+  // for each category in user.categories
+    // get a cursor:
+    var categories = req.user.categories;
+    var transactions = req.user.transactions;
+    console.log(categories);
+    console.log(transactions);
 
+    
+
+    // categories.forEach( 
+    //   // let debit = 0;
+    //   // var credit = 0;
+    //   transactions.forEach(
+    //       if (transactions.category == categories.categoryName) {
+    //       debit = debit + transaction.debit
+
+    //       credit = credit + transaction.credit
+    //       }) // end of transaction for each
+    //   category.activity = debit + credit
+    //   category.save()
+    //   ) // end of category for each
+}) // end of category PUT for category activity
 
 
 

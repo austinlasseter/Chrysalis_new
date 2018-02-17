@@ -40,6 +40,12 @@ $(document).on('keyup', '.new-category', function (e) {
     // $(".new-category").removeClass('new-category');
 });
 
+$(document).on('click', '.category-budget-span', function() {
+	//remove hidden
+	$(this).addClass('hidden')
+	$(this).removeclass('hidden')
+	// add hidden
+})
 
 // UPDATE BUDGET OF CATEGORY ON ENTER
 $(document).on('keyup', '.category-row-budgeted', function (e) {
@@ -85,6 +91,7 @@ $(document).on('keyup', '.category-row', function (e) {
 
 
 $('.category-dropdown').change(function() {
+	alert('inside category change for transaction - transaction processing category dropdown change func');
 	// for the transactions page: with the dropdown select box for adding a transaction
 	// this updates a transaction with an assigned category
 	//console.log(this.parent('tr').data('id'));
@@ -95,39 +102,24 @@ $('.category-dropdown').change(function() {
 	 $.ajax({
 			  type: "PUT",
 			  url: url,
-			  data: { category: 'groceries'}, 
+			  data: { category: 'fakefakefake'}, 
 			  dataType: 'json',		
+			  success: function() {
+			  	var url = 'api/categories/' 
+			  	$.ajax({
+			  		type: 'PUT',
+			  		url: url
+			  	})
+			  } // end of success
 
 		}); // end of ajax call  
 }); // end of $('.transaction-row-category').change(function() {
 
 
-// on success of updating a transaction's category, re calculate category.activity
-function updateCategoryActivity() {
-	// for each category in user.categories
-		// get a cursor:
-		var cursor = user.categories.find();
-		cursor.each(function(err, category) {
-			// find all transactions with transaction.category = that category
-			user.transactions.find({
-				category: category
-				})
-			// for those transactions, 
-			// SUM all the debits and credits
-			//.aggregate() 
-			activitySum = 102.34 //made up for now
-			// update category.activity
-			category.Update({
-			category.activity = activitySum
-			})
-			
-		})
-	
-	
-	}
+
 	
 
-}
+//}
 
 
 

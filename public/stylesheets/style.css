@@ -1,5 +1,6 @@
 body {
   font-family: 'Raleway', sans-serif;
+  max-width: 100%;
   
 }
 
@@ -59,16 +60,25 @@ header {
 .transaction-main { /*defines the main section of the transactions page*/
   margin-top: 60px;
 }
+
+select.category-dropdown {
+  width: 100px;
+}
+
+.transaction-table-category {
+  width: 60px;
+}
+
 .transactions-table {
   margin-left: 300px;
   padding: 10px;
+  overflow-x: hidden;
 }
-.category-dropdown { /* in transactions page*/
-  width: 25px;
-}
+
 .budget-table {
   margin-left: 300px;
   padding: 10px;
+  overflow-x: hidden;
 }
 
 .faq-main {
@@ -84,6 +94,10 @@ header {
 
 .dashboard-main { /*defines the main section of the transactions page*/
   margin-top: 60px;
+}
+
+.hidden {
+  display: none;
 }
 
 .logo {
