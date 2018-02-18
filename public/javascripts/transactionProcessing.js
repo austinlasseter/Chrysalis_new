@@ -1,19 +1,19 @@
 // https://stackoverflow.com/questions/6012823/how-to-make-html-table-cell-editable
-function addCategoryRow() {
-	// adds new category row to dashboard/budget page
-	// this is the first step in the process of creating a new category
-	// alert('adding the category');
-	console.log('added category row');
-	$('.budget-table').append(`
-		<tr class="new-category-row" >
-		  <td><input type="text" value="new category" class="new-category"  /></td>
-		  <td contenteditable="true" type="number">0</td>
-		  <td>0</td>
-		  <td>0</td>
-		</tr>
-		`);
-
-};
+// function addCategoryRow() {
+// 	// adds new category row to dashboard/budget page
+// 	// this is the first step in the process of creating a new category
+// 	// alert('adding the category');
+// 	console.log('added category row');
+// 	$('.budget-table').append(`
+// 		<tr class="new-category-row" >
+// 		  <td><input type="text" value="new category" class="new-category"  /></td>
+// 		  <td contenteditable="true" type="number">0</td>
+// 		  <td>0</td>
+// 		  <td>0</td>
+// 		</tr>
+// 		`);
+//
+// };
 
 
 $(document).on('keyup', '.new-category', function (e) {
@@ -49,34 +49,15 @@ $(document).on('click', '.category-budget-span', function() {
 });
 
 // UPDATE BUDGET OF CATEGORY ON ENTER
-$(document).on('keyup', '.category-row-budgeted-input', function (e) {
-
-
-// $( ".target" ).change(function() { alert( "Handler for .change() called." ); });
-
-	
+$(document).on('keydown', '.category-row-budgeted-input', function (e) {
 	console.log('inside category.budget UPDATE');
-	// for the dashboard page
+	console.log(e.target);
+	// console.log();
 	if (e.keyCode == 13) {
-	console.log('inside category.budget UPDATE');
-	console.log($(this));
-	console.log($(this).parent());
-	console.log($('.category-row-budgeted').val());
-  //   if (e.keyCode == 13) {
-  //   	console.log($('.category-row-budgeted').val());
-  //   	//is input empty
-  //   	let url = 'api/categories/' + $(this).parent().data('id') + '/budget'
-  //       $.ajax({
-		// 	  type: "PUT",
-		// 	  url: url
-		// 	  data: {budgeted: $('.category-row-budgeted').val()
-			  	
-		// 	  	}, 
-		// 	  dataType: 'json',
-		// }); // end of ajax call    
-  //   } // end of 'if enter'
-	} // end of if key = 13
-}); // end of document.on
+		console.log('inside category.budget UPDATE');
+        console.log($(e.target).val())
+	}
+});
 
 $(document).on('keyup', '.category-row-categoryName', function (e) {
 	// for the dashboard page:
@@ -97,7 +78,7 @@ $(document).on('keyup', '.category-row', function (e) {
 
 
 $('.category-dropdown').change(function() {
-	alert('inside category change for transaction - transaction processing category dropdown change func');
+	// alert('inside category change for transaction - transaction processing category dropdown change func');
 	// for the transactions page: with the dropdown select box for adding a transaction
 	// this updates a transaction with an assigned category
 	//console.log(this.parent('tr').data('id'));
@@ -114,7 +95,8 @@ $('.category-dropdown').change(function() {
 			  data: { category: 'groceries'}, 
 			  dataType: 'json',		
 			  success: function() {
-			  	var url = 'api/categories/' 
+			  	console.log('successful!');
+			  	var url = 'api/categories/';
 			  	$.ajax({
 			  		type: 'PUT',
 			  		url: url

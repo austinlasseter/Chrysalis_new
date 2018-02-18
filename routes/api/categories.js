@@ -5,14 +5,12 @@ var upload = multer({ dest: 'uploads/' })
 var router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-const Category = require('../../models/category'); 
-
+const Category = require('../../models/category');
 const config = require('../../config');
 
 //POST: create new category
 router.post('/', jsonParser, (req, res) => {
   console.log('we are in the create new category post');
-
   req.user.categories.push(req.body);
   req.user.save(function (err) {
     if (err) console.log(err);
@@ -41,13 +39,68 @@ router.put('/', jsonParser, (req, res) => {
   //on success of updating a transaction's category, re calculate category.activity
   // for each category in user.categories
     // get a cursor:
+    console.log("here");
+
     var categories = req.user.categories;
     var transactions = req.user.transactions;
-    console.log('INSIDE THE PUT TO CATEGORIES TO UPDATE THE ACTIVITY')
-    console.log(categories);
-    console.log(transactions);
 
-    
+    // console.log(categories);
+    // console.log(transactions);
+
+// let debit = 0;
+// let credit = 0;
+// transactions.forEach(function (transaction) {
+//     // console.log(transaction);
+//     // console.log("***")
+//     // console.log(transaction.category)
+//     // console.log(category.categoryName)
+//     // console.log(transaction.category == category.categoryName)
+//     // console.log("***")
+//
+//     // if(transaction.category == category.categoryName){
+//         debit = debit + parseFloat(transaction.debit);
+//         credit = credit + parseFloat(transaction.credit);
+//     // }
+//     // credits[category._id] = credit;
+//     // debits[category._id] = debit;
+// });
+//
+// console.log(credit);
+// console.log(debit);
+
+    let credits = {};
+    let debits = {};
+
+    categories.forEach(function (category) {
+        // console.log(category);
+        let debit = 0;
+        let credit = 0;
+        transactions.forEach(function (transaction) {
+            // console.log(transaction);
+            console.log("***")
+            console.log(transaction.category)
+            console.log(category.categoryName)
+            console.log(transaction.category == category.categoryName)
+            console.log("***")
+
+            if(transaction.category == category.categoryName){
+                debit = debit + parseFloat(transaction.debit);
+                credit = credit + parseFloat(transaction.credit);
+            }
+            // credits[category._id] = credit;
+            // debits[category._id] = debit;
+        });
+
+        credits[category._id] = credit;
+        debits[category._id] = debit;
+
+        // console.log(debit);
+
+    });
+
+    console.log(credits);
+    console.log(debits);
+
 
     // categories.forEach( 
     //   // let debit = 0;
