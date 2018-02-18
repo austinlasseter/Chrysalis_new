@@ -41,14 +41,20 @@ $(document).on('keyup', '.new-category', function (e) {
 });
 
 $(document).on('click', '.category-budget-span', function() {
-	//remove hidden
-	$(this).addClass('hidden')
-	$(this).removeclass('hidden')
-	// add hidden
-})
+
+	console.log('in the removal of hidden function');
+	$('.category-budget-span').addClass('hidden');
+	$('.category-row-budgeted-input').removeClass('hidden');
+
+});
 
 // UPDATE BUDGET OF CATEGORY ON ENTER
-$(document).on('keyup', '.category-row-budgeted', function (e) {
+$(document).on('keyup', '.category-row-budgeted-input', function (e) {
+
+
+// $( ".target" ).change(function() { alert( "Handler for .change() called." ); });
+
+	
 	console.log('inside category.budget UPDATE');
 	// for the dashboard page
 	if (e.keyCode == 13) {
@@ -99,10 +105,13 @@ $('.category-dropdown').change(function() {
 	let that = $(this);
 	let url = 'api/transactions/' + $(this).parent().parent().data('id') + '/category'
 	console.log(url)
+	let category = $(this).data('option')
+	console.log('this is the category:');
+	console.log(category);
 	 $.ajax({
 			  type: "PUT",
 			  url: url,
-			  data: { category: 'fakefakefake'}, 
+			  data: { category: 'groceries'}, 
 			  dataType: 'json',		
 			  success: function() {
 			  	var url = 'api/categories/' 
@@ -112,21 +121,7 @@ $('.category-dropdown').change(function() {
 			  	})
 			  } // end of success
 
-		}); // end of ajax call  
+		 }); // end of ajax call  
 }); // end of $('.transaction-row-category').change(function() {
 
-
-
-	
-
-//}
-
-
-
-// function onStart() {
-//   //calls all initializer functions.
-
-// }
-
-// $(onStart);
 

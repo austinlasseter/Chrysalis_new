@@ -43,6 +43,7 @@ router.put('/', jsonParser, (req, res) => {
     // get a cursor:
     var categories = req.user.categories;
     var transactions = req.user.transactions;
+    console.log('INSIDE THE PUT TO CATEGORIES TO UPDATE THE ACTIVITY')
     console.log(categories);
     console.log(transactions);
 
