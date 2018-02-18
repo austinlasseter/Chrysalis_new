@@ -136,10 +136,13 @@ router.post('/upload', type, function(req, res) {
     resultsArray.push(oneRow);
     }) // end of on.data
     .on('end', function () {
+      console.log('THIS IS RESULTSARRAY IN INDEX');
       console.log(resultsArray);
       // resultsArray.forEach(function (row, currentIndex) {
         req.user.transactions.push(resultsArray); //i see that row must be defined in 140, but how?
-          req.user.save(function (err) {
+        console.log('THIS IS REQ.USER.trans POST TRANS PUSH');
+        console.log(req.user.transactions);
+        req.user.save(function (err) {
             if (err) {
               console.log(err);
               res.sendStatus(500);
