@@ -137,40 +137,41 @@ router.post('/upload', type, function(req, res) {
     .on('end', function () {
         // At this point you have access to all the rows parsed from the file
         console.log("Parsed the file, Done !");
+        // console.log("The results array: ", resultsArray);
 
-        resultsArray.forEach(function (row, currentIndex) {
-            //here you have access to each row in the iteration
-            // this query below isnt working, when we try to find unique trasanctions. FIX IT.
-            User.find({transactions: { transdate: row.transdate,
-                    description: row.description,
-                    debit: row.debit,
-                    credit: row.credit,
-                    balance: row.balance,
-                    category: row.category
-            }})
-            .count()
-            .then(function (count) {
-                console.log(count);
-                // The query should give is a count of 0 only when certain trasactions arent present.
-                if (count == 0) {
+        // To make it easier to test i set the transactions for a user to null or empty everytime i upload stuff. You can remove this part.
+        req.user.transactions = [];
+        req.user.save(function (err) {
+            if(err){
+                res.send(500)
+            } else {
+                // All transactions for a user removed at this point.
+                console.log('Removed successfully');
+                console.log(req.user.transactions);
+
+                resultsArray.forEach(function (row, currentIndex) {
+                    // I push in each row into the transactions
                     req.user.transactions.push(row);
-                    req.user.save(function (err) {
-                        if(err){
-                            res.send(500)
-                        } else {
-                          console.log('Added successfully');
-                          console.log(req.user);
-                          if(resultsArray.length == (currentIndex+1)){
-                              res.status(200).send('Uploaded Successfully!');
-                          }
-                        }
-                    });
+                });
+
+                // Finally when all are pushed in, i save the user
+
+                req.user.save(function (err) {
+                    if(err){
+                        res.send(500)
+                    } else {
+                        console.log('Added successfully');
+                        console.log('*******');
+                        console.log(req.user.transactions);
+                        console.log('*******');
+                        res.redirect('transactions');
+                    }
+                });
+
+            }
+        });
 
 
-                }
-            });
-
-        })
     });
 
 });

@@ -20,12 +20,12 @@ router.put('/:id/category', jsonParser, (req, res) => { // TO DO
   // console.log(req.body);// this should have the data
   // console.log('you are in the PUT for categorizing transactions (in the transactions page)');
   // console.log(req.user);
-  		req.user.transactions.find({_id: req.params.id}, function(transaction) {
-  			console.log(transaction)
-  			transaction.category = req.data.category 
-  			transaction.save();
-  			// res.json.(transaction);
-  		})
+		req.user.transactions.find({_id: req.params.id}, function(transaction) {
+			console.log(transaction)
+			transaction.category = req.data.category
+			transaction.save();
+			// res.json.(transaction);
+		});
   		// req.user.transactions.update(
   		// 	{ _id: req.params.id},
   		// 	{$push: {

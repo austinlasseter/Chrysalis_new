@@ -77,7 +77,8 @@ function runServer( port = PORT) { //*?* why do there need to be inputs now?
 	// const port = process.env.PORT || 8080;
 	return new Promise((resolve, reject) => {
 		// console.log(DATABASE_URL);
-		 mongoose.connect("mongodb://chrysalis:chrysalis@ds155577.mlab.com:55577/chrysalis", err => {
+		//  mongoose.connect("mongodb://chrysalis:chrysalis@ds155577.mlab.com:55577/chrysalis", err => {
+		 mongoose.connect("mongodb://localhost/chrysalis", err => {
 			if (err) {
 				return reject(err); //*?* how does this work?
 			}
