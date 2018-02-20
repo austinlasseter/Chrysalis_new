@@ -124,6 +124,8 @@ router.post('/upload', type, function(req, res) {
     return res.status(400).send('No files were uploaded.');
   }
   fs.createReadStream(req.file.path)
+  // helpful explanation of streams in node:
+  // https://medium.freecodecamp.org/node-js-streams-everything-you-need-to-know-c9141306be93
   .pipe(csv())
   .on('data', function (data) { //
     var oneRow = {};
@@ -133,13 +135,44 @@ router.post('/upload', type, function(req, res) {
     oneRow.credit = data['Credit'];
     oneRow.balance = data['Balance_anon'];
     oneRow.category = data['category'];
-    resultsArray.push(oneRow);
-    }) // end of on.data
-    .on('end', function () {
-      console.log('THIS IS RESULTSARRAY IN INDEX');
+
+    console.log('here are the pre upload transactions:');
+    console.log(req.user.transactions);
+    var allTransactions = req.user.transactions;
+
+    var testArray = req.user.transactions.filter(transaction => transaction.transdate === oneRow.transdate);
+    console.log('this is testArray');
+    console.log(testArray.length);
+    var countArray = allTransactions.filter(transaction => transaction.transdate === oneRow.transdate 
+      && transaction.description === oneRow.description
+      && transaction.balance === oneRow.balance
+      );
+    console.log(countArray.length);
+      if (countArray.length ==0) {
+        resultsArray.push(oneRow);
+      } 
+      console.log('index line 152');
       console.log(resultsArray);
+
+
+
+    // resultsArray.push(oneRow);
+     return resultsArray;
+    }) // end of on.data
+    // .on('end', function (results) {
+    //   console.log('this is resultsArray from index readStream from the csv');
+    //   console.log(resultsArray);
+    //   var cleanedArray = {};
+
+
+    //   return cleanedResultsArray;
+    // })
+    .on('end', function () {
+      console.log('yep it is parsed');
+      //console.log(resultsArray);
       // resultsArray.forEach(function (row, currentIndex) {
-        req.user.transactions.push(resultsArray); //i see that row must be defined in 140, but how?
+        //req.user.transactions = []; //i see that row must be defined in 140, but how?
+        
         console.log('THIS IS REQ.USER.trans POST TRANS PUSH');
         console.log(req.user.transactions);
         req.user.save(function (err) {
@@ -148,9 +181,16 @@ router.post('/upload', type, function(req, res) {
               res.sendStatus(500);
             }
             else {
-              //if (resultsArray.length == (currentIndex+1)) {
-                //res.status(200).send('Uploaded successfully!')
-                res.redirect('transactions');
+                resultsArray.forEach( function (row, currentIndex) {
+                  req.user.transactions.push(row);
+                });
+                req.user.save(function (err) {
+                  if (err) {
+                    res.send(500);
+                  } else {
+                    res.redirect('transactions');
+                  }
+                })
               //} // end of if results array length == currentindex+1
             } //end of else
           }); //end of req.user.save()

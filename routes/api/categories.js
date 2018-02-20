@@ -23,14 +23,26 @@ router.put('/:id/budget', jsonParser, (req, res) => { // TO DO
   //update a category to have a 'budgeted' amount
   // also will likely do the calculation of 'activity' within this post
   console.log('you are in the PUT for category-budget updates (in the dashboard page)');
-  //console.log(req.user);
-  req.user.categories.update({
-    //first the query
+  var budgetValue = (req.body['budgeted']);
+  console.log('this is the server side budgetValue from the budgetValue PUT request');
+  console.log(budgetValue);
+  console.log('this is req.params.id');
+  console.log(req.params.id);
+  var categoryId = req.params.id;
 
-    categoryName: this.closest('tr').categoryName.val() // ?? how do I actually get this??
-    },
-    {// then the update
-    budgeted: $(".category-row").budgeted.value // ?? how do I actually get this?? And it has to come from a dropdown of available values.
+  var category = req.user.categories.id(req.params.id);
+  // console.log('TRANSACTION FROM PUT TO ID/CATEGORY:');
+  // console.log('line 26');
+  // console.log(transaction);
+    //UNCOMMENT 32-39
+  category.budgeted = budgetValue;
+
+  req.user.save(function (err, user) {
+    if(err){
+      res.sendStatus(500);
+    } else {
+      res.send(category);
+    }
   });
 });
 
@@ -44,30 +56,6 @@ router.put('/', jsonParser, (req, res) => {
     var categories = req.user.categories;
     var transactions = req.user.transactions;
 
-    // console.log(categories);
-    // console.log(transactions);
-
-// let debit = 0;
-// let credit = 0;
-// transactions.forEach(function (transaction) {
-//     // console.log(transaction);
-//     // console.log("***")
-//     // console.log(transaction.category)
-//     // console.log(category.categoryName)
-//     // console.log(transaction.category == category.categoryName)
-//     // console.log("***")
-//
-//     // if(transaction.category == category.categoryName){
-//         debit = debit + parseFloat(transaction.debit);
-//         credit = credit + parseFloat(transaction.credit);
-//     // }
-//     // credits[category._id] = credit;
-//     // debits[category._id] = debit;
-// });
-//
-// console.log(credit);
-// console.log(debit);
-
     let credits = {};
     let debits = {};
 
@@ -76,45 +64,37 @@ router.put('/', jsonParser, (req, res) => {
         let debit = 0;
         let credit = 0;
         transactions.forEach(function (transaction) {
-            // console.log(transaction);
-            console.log("***")
-            console.log(transaction.category)
-            console.log(category.categoryName)
-            console.log(transaction.category == category.categoryName)
-            console.log("***")
-
             if(transaction.category == category.categoryName){
+              if (transaction.debit) {
                 debit = debit + parseFloat(transaction.debit);
+              } else {
+                debit = debit;
+              }
+              if (transaction.credit) {
+
                 credit = credit + parseFloat(transaction.credit);
-            }
-            // credits[category._id] = credit;
-            // debits[category._id] = debit;
-        });
+              } else {
+                credit = credit;
+              }
+              } // end if ==
+            }); // end for each of transaction
+      
 
-        credits[category._id] = credit;
-        debits[category._id] = debit;
+        console.log(category);
 
-        // console.log(debit);
+        category.activity = credit + debit;
+        console.log(category);
+        req.user.save();
 
-    });
-
-    console.log(credits);
-    console.log(debits);
-
-
-    // categories.forEach( 
-    //   // let debit = 0;
-    //   // var credit = 0;
-    //   transactions.forEach(
-    //       if (transactions.category == categories.categoryName) {
-    //       debit = debit + transaction.debit
-
-    //       credit = credit + transaction.credit
-    //       }) // end of transaction for each
-    //   category.activity = debit + credit
-    //   category.save()
-    //   ) // end of category for each
-}) // end of category PUT for category activity
+    }); // ends categories for each 
+      req.user.save(function (err, user) {
+        if(err){
+          res.sendStatus(500);
+        } else {
+          res.sendStatus(200);
+        }
+      });
+}); // end of category PUT for category activity
 
 
 

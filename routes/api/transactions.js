@@ -26,7 +26,7 @@ router.put('/:id/category', jsonParser, (req, res) => { // TO DO
 
   req.user.save(function (err, user) {
     if(err){
-      res.sendStatus(500)
+      res.sendStatus(500);
     } else {
       res.send(transaction);
     }

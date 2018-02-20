@@ -1,19 +1,19 @@
 // https://stackoverflow.com/questions/6012823/how-to-make-html-table-cell-editable
-// function addCategoryRow() {
-// 	// adds new category row to dashboard/budget page
-// 	// this is the first step in the process of creating a new category
-// 	// alert('adding the category');
-// 	console.log('added category row');
-// 	$('.budget-table').append(`
-// 		<tr class="new-category-row" >
-// 		  <td><input type="text" value="new category" class="new-category"  /></td>
-// 		  <td contenteditable="true" type="number">0</td>
-// 		  <td>0</td>
-// 		  <td>0</td>
-// 		</tr>
-// 		`);
-//
-// };
+function addCategoryRow() {
+	// adds new category row to dashboard/budget page
+	// this is the first step in the process of creating a new category
+	// alert('adding the category');
+	console.log('added category row');
+	$('.budget-table').append(`
+		<tr class="new-category-row" >
+		  <td><input type="text" value="new category" class="new-category"  /></td>
+		  <td contenteditable="true" type="number">0</td>
+		  <td>0</td>
+		  <td>0</td>
+		</tr>
+		`);
+
+};
 
 
 $(document).on('keyup', '.new-category', function (e) {
@@ -55,7 +55,18 @@ $(document).on('keydown', '.category-row-budgeted-input', function (e) {
 	// console.log();
 	if (e.keyCode == 13) {
 		console.log('inside category.budget UPDATE');
-        console.log($(e.target).val())
+        budgetValue = ($(e.target).val());
+        console.log(budgetValue);
+        //ajax query to '/:id/budget'
+        let url = 'api/categories/' + $(e.target).parent().parent().data('id') + '/budget'
+        
+
+        $.ajax({
+			  type: "PUT",
+			  url: url,
+			  data: { budgeted: budgetValue}, 
+			  dataType: 'json',		
+		 }); // end of ajax call  
 	}
 });
 
@@ -86,13 +97,14 @@ $('.category-dropdown').change(function() {
 	let that = $(this);
 	let url = 'api/transactions/' + $(this).parent().parent().data('id') + '/category'
 	console.log(url)
-	let category = $(this).data('option')
+	let category = $(this).val();
 	console.log('this is the category:');
+	console.log('this is category for transaction categorization, tp line 102');
 	console.log(category);
 	 $.ajax({
 			  type: "PUT",
 			  url: url,
-			  data: { category: 'groceries'}, 
+			  data: { category: category}, 
 			  dataType: 'json',		
 			  success: function() {
 			  	console.log('successful!');
