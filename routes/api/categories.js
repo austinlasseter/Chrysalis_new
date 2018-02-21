@@ -36,6 +36,7 @@ router.put('/:id/budget', jsonParser, (req, res) => { // TO DO
   // console.log(transaction);
     //UNCOMMENT 32-39
   category.budgeted = budgetValue;
+  category.available = category.budgeted - category.activity;
 
   req.user.save(function (err, user) {
     if(err){
@@ -83,6 +84,7 @@ router.put('/', jsonParser, (req, res) => {
         console.log(category);
 
         category.activity = credit + debit;
+        category.available = category.budgeted - category.activity;
         console.log(category);
         req.user.save();
 

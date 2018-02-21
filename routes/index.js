@@ -134,7 +134,7 @@ router.post('/upload', type, function(req, res) {
     oneRow.debit = data['Debit'];
     oneRow.credit = data['Credit'];
     oneRow.balance = data['Balance_anon'];
-    oneRow.category = data['category'];
+    oneRow.category = 'uncategorized';
 
     console.log('here are the pre upload transactions:');
     console.log(req.user.transactions);
@@ -153,10 +153,6 @@ router.post('/upload', type, function(req, res) {
       } 
       console.log('index line 152');
       console.log(resultsArray);
-
-
-
-    // resultsArray.push(oneRow);
      return resultsArray;
     }) // end of on.data
     // .on('end', function (results) {
@@ -169,12 +165,8 @@ router.post('/upload', type, function(req, res) {
     // })
     .on('end', function () {
       console.log('yep it is parsed');
-      //console.log(resultsArray);
-      // resultsArray.forEach(function (row, currentIndex) {
-        //req.user.transactions = []; //i see that row must be defined in 140, but how?
-        
-        console.log('THIS IS REQ.USER.trans POST TRANS PUSH');
-        console.log(req.user.transactions);
+        // console.log('THIS IS REQ.USER.trans POST TRANS PUSH');
+        // console.log(req.user.transactions);
         req.user.save(function (err) {
             if (err) {
               console.log(err);
@@ -194,33 +186,7 @@ router.post('/upload', type, function(req, res) {
               //} // end of if results array length == currentindex+1
             } //end of else
           }); //end of req.user.save()
-      //   User.find({transactions: { transdate: row.transdate,
-      //               description: row.description,
-      //               debit: row.debit,
-      //               credit: row.credit,
-      //               balance: row.balance,
-      //               category: row.category
-      //   } // end of transaction object
-      // }) // end of user find
-      // .count()
-      // .then(function (count) {
-      //   console.log(count);
-      //   if (count == 0) { //aka as long as that transaction isn't already in the db
-      //     req.user.transactions.push(row); //i see that row must be defined in 140, but how?
-      //     req.user.save(function (err) {
-      //       if (err) {
-      //         res.send(500);
-      //       }
-      //       else {
-      //         if (resultsArray.length == (currentIndex+1)) {
-      //           //res.status(200).send('Uploaded successfully!')
-      //           res.redirect('transactions');
-      //         } // end of if results array length == currentindex+1
-      //       } //end of else
-      //     }); //end of req.user.save()
-      //   } // end of if count == 0
-      // }); // end of then function count
-    //}); // end of for Each
+
     }); // end of on end
     console.log('at the end');
     //res.redirect('transactions');
@@ -338,7 +304,7 @@ router.post('/new-user', jsonParser, (req, res) => {
     })
     .then (function(user) {
       //intialize with categories: 
-      var initialCategoryList = ['housing', 'groceries', 'transportation', 'clothes', 'giving', 'books']
+      var initialCategoryList = ['housing', 'groceries', 'transportation', 'clothes', 'giving', 'books', 'uncategorized']
 
       initialCategoryList.forEach(function(category) {
         var category = {categoryName: category,

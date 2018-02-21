@@ -116,6 +116,8 @@ $('.category-dropdown').change(function() {
 			  } // end of success
 
 		 }); // end of ajax call  
+
+
 }); // end of $('.transaction-row-category').change(function() {
 
 
