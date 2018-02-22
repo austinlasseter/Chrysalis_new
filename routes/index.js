@@ -143,10 +143,10 @@ router.post('/upload', type, function(req, res) {
     var testArray = req.user.transactions.filter(transaction => transaction.transdate === oneRow.transdate);
     console.log('this is testArray');
     console.log(testArray.length);
-    var countArray = allTransactions.filter(transaction => transaction.transdate === oneRow.transdate 
-      && transaction.description === oneRow.description
-      && transaction.balance === oneRow.balance
-      );
+    var countArray = allTransactions.filter(function(transaction) { return (transaction.transdate === oneRow.transdate)
+      && (transaction.description === oneRow.description)
+      && (transaction.balance === oneRow.balance)
+      });
     console.log(countArray.length);
       if (countArray.length ==0) {
         resultsArray.push(oneRow);

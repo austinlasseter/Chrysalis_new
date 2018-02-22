@@ -25,7 +25,8 @@ block content
 					td #{transaction.transdate}
 					td #{transaction.description}
 					td.transaction-table-category 
-							select.category-dropdown
+							.transaction-category-display-value #{transaction.category} 
+							select.category-dropdown.hidden
 								each category in categories
 									option #{category.categoryName} 
 					//- #{transaction.category}
