@@ -94,7 +94,8 @@ align-items: asdf;
   }
 
   .col-75 {
-    width: 70%;
+    /*display: flex;*/
+    width: 74.2%;
   }
 
   /* 12 columns */
@@ -104,6 +105,12 @@ align-items: asdf;
 }
  /*****************************/
 
+.bold {
+  font-weight: 800;
+}
+.white {
+  color: white;
+}
 
 .brand-heading {
   box-sizing: border-box;
@@ -163,8 +170,7 @@ select.category-dropdown {
 }
 
 .faq-main {
-  margin-top: 60px;
-  text-align: left;
+  text-align: center;
 }
 
 .create-bar {

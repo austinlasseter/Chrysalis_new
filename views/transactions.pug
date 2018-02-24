@@ -1,41 +1,40 @@
 extends layout
 
 block content	
+	.row
+		header.col-12 
+			.brand-heading Chrysalis
 
-	header 
-		.brand-heading Chrysalis
-	div.gold-line
-
-	section.transaction-main
-		div.side-bar
+			//- section.transaction-main
+		.side-bar.col-3
 			div.side-bar-links
 				a.side-bar-item(href='/dashboard') Back to Budget
 				a.side-bar-item(href='/faq') Questions? Go to FAQ.
-
-		div.create-bar 
-			a(href='/upload') Upload Transactions
-		table.transactions-table
-			tr
-				th Date
-				th Payee
-				th Category
-				th Outflow
-				th Inflow
-			each transaction in transactions
-				tr(data-id=transaction._id)
-					td #{transaction.transdate}
-					td #{transaction.description}
-					td.transaction-table-category 
-							.transaction-category-display-value #{transaction.category} 
-							select.category-dropdown.hidden
-								each category in categories
-									option #{category.categoryName} 
-					//- #{transaction.category}
-					//- (input(type='text')
-					//- 	contenteditable='true'
-					//- 	onClick(giveTransactionid(#{transaction._id}))) 
-					td #{transaction.debit}
-					td #{transaction.credit}
+		.col-75
+			div.create-bar 
+				a(href='/upload') Upload Transactions
+			table.transactions-table
+				tr
+					th Date
+					th Payee
+					th Category
+					th Outflow
+					th Inflow
+				each transaction in transactions
+					tr(data-id=transaction._id)
+						td #{transaction.transdate}
+						td #{transaction.description}
+						td.transaction-table-category 
+								.transaction-category-display-value #{transaction.category} 
+								select.category-dropdown.hidden
+									each category in categories
+										option #{category.categoryName} 
+						//- #{transaction.category}
+						//- (input(type='text')
+						//- 	contenteditable='true'
+						//- 	onClick(giveTransactionid(#{transaction._id}))) 
+						td #{transaction.debit}
+						td #{transaction.credit}
 
 	script(src='http://code.jquery.com/jquery-3.3.1.js', integrity='sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=', crossorigin='anonymous')
 	script(src='javascripts/transactionProcessing.js')

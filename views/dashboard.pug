@@ -17,23 +17,17 @@ block content
 				tr
 					th Category
 					th Budgeted
-					th Activity 
-							
+					th Activity 		
 					th Available
 							
 				each category in categories
 					tr(data-id=category._id).category-row
 
 						td(contenteditable='true' type='text') #{category.categoryName}
-							
-
 						td.budget-table-category
 							input(type='text' class='category-row-budgeted-input hidden') 
 							span.category-budget-span #{category.budgeted}
 						td #{category.activity}
-							//- (input(type='text')
-							//- contenteditable='true'
-							//- onClick(giveTransactionid(#{transaction._id})))
 						td #{category.available}
 	//- header 
 	//- 	.brand-heading Chrysalis

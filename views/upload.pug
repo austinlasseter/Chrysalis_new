@@ -1,13 +1,15 @@
 extends layout
 
 block content
-	header 
-		.brand-heading Chrysalis
-	section.upload
-		
-		div You've successfully hit the upload page. Congrats.
-
-		form(action='/upload', enctype='multipart/form-data', method='post')
-			p Choose a file to upload. Click here to download example template.
-			input#upload-input(type='file', name='csvFile', accept='*.csv')
-			input(type='submit', value='Upload Transactions CSV')
+	.row
+		header.col-12
+			.brand-heading Chrysalis
+		.side-bar.col-3
+			div.side-bar-links
+				a.side-bar-item(href='/dashboard') Back to Budget
+				a.side-bar-item(href='/faq') Questions? Go to FAQ.
+		section.upload.col-75
+			form(action='/upload', enctype='multipart/form-data', method='post')
+				p Choose a file to upload (make sure the file has the standard formatting - if you have questions on this please refer to the FAQ section).
+				input#upload-input(type='file', name='csvFile', accept='*.csv')
+				input(type='submit', value='Upload Transactions CSV')

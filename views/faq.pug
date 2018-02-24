@@ -1,12 +1,23 @@
 extends layout
 
 block content	
+	.row
+		header.col-12 
+				.brand-heading Chrysalis
+		.side-bar.col-3 
+			div.side-bar-links
+					a.side-bar-item(href='/transactions') Go to Transactions
+					a.side-bar-item(href='/dashboard') Go to Budget
+		.col-75
+			div.create-bar 
+				div.bold.white FAQ 
+			section.faq-main
+				p.bold What is Chrysalis?
+					p It's a better budget app
 
-	header Chrysalis
-	section.faq-main
-		p What is Chrysalis?
-			p It's a better budget app
-		p Who made Chrysalis?
-			p Adriel
-		p Is my data truly secure?
-			p We hope so.
+				p.bold In what format should I upload data?
+					p Please upload a csv with the column headers of: 
+					| 'Post Date',	'Description',	'Credit', 'Balance_anon', 'category'
+					p At the moment, the csv must have these headers precisely.
+
+				p.bold For all other questions, please email a.barrettjohnson@gmail.com
