@@ -2,11 +2,12 @@ body {
   font-family: 'Raleway', sans-serif;
   max-width: 100%;
   text-align: center;
+  margin:0px;
   
 }
 
 a {
-  color: #00B7FF;
+  color: white;
   transition: all ease-in-out 200ms;
 }
 a:hover {
@@ -15,8 +16,7 @@ a:hover {
 }
 
 header {
-  position: fixed;
-  height: 60px;
+
   background-color: black; 
   width: 100%;
   top: 0px;
@@ -28,6 +28,82 @@ header {
   text-align: left;
   z-index: 100;
 }
+
+/*
+justify-content: asdf;
+display: flex;
+align-items: asdf;
+
+*/
+
+/************* float styling *******************/
+.row {
+  
+/*  padding-left: 20px;
+  padding-right: 20px;*/
+  margin: 0 auto;
+}
+
+/* Clearfix */
+.row::before,
+.row::after {
+  display: table;
+  content: '';
+}
+
+.row::after {
+  clear: both;
+}
+
+.col-3, .col-4, .col-6, .col-75, .col-12 {
+  float: left;
+
+  /* Gutters:
+   * Each column is padded by half-a-gutter on each side,
+   *
+   * Half a gutter is 10px, 10/960 (context) = 1.041666%
+   *
+   */
+  /*padding-left: 1.04166666%;*/
+  /*padding-right: 1.04166666%;*/
+}
+
+/* Mobile defaults */
+
+.col-3, .col-4, .col-6, .col-75, .col-12 {
+  width: 100%;
+  /*border: 1px solid black;*/
+}
+
+
+/* Non-mobile, grid */
+@media only screen and (min-width: 640px) {
+  /* 3 columns, 3/12 in % */
+  .col-3 {
+    width: 25%;
+  }
+
+  /* 4 columns */
+  .col-4 {
+    width: 33.33333333333%;
+  }
+
+  /* 6 columns */
+  .col-6 {
+    width: 50%;
+  }
+
+  .col-75 {
+    width: 70%;
+  }
+
+  /* 12 columns */
+  .col-12 {
+    width: 100%;
+  }
+}
+ /*****************************/
+
 
 .brand-heading {
   box-sizing: border-box;
@@ -71,15 +147,19 @@ select.category-dropdown {
 }
 
 .transactions-table {
-  margin-left: 300px;
+
   padding: 10px;
   width: 100%;
 }
 
 .budget-table {
-  margin-left: 300px;
+  
   padding: 10px;
   width: 100%;
+}
+
+.main-budget-table-section {
+  /*border: black 10px;*/
 }
 
 .faq-main {
@@ -88,9 +168,9 @@ select.category-dropdown {
 }
 
 .create-bar {
-  margin-left: 290px;
+  padding:5px;
   width: 100%;
-  background: grey;
+  background: #662925;
 }
 
 .dashboard-main { /*defines the main section of the transactions page*/
@@ -124,16 +204,22 @@ text-align-last: center; }
 }
 
 .side-bar {
-  height: 100%;
-  width: 300px;
+  height: 100vh;
+  /*width: 300px;
   position: fixed; /*Stay in place on the scroll*/
-  z-index: 1; /*Stay on top*/
-  left: 0;
+  /*z-index: 1; Stay on top*/
+  /*left: 0;*/
   /*distance from top is currently defined in section for each page*/
-  background-color: black; /*Black*/
-/*  color: white;*/
-  overflow-x:hidden /*Disables horizontal scroll*/
-  padding-top: 20px;
+  background-color: black; 
+  color: white;
+  /*overflow-x:hidden Disables horizontal scroll*/
+  /*padding-top: 20px;*/
+}
+
+
+
+.side-bar-links {
+  margin-top:50px;
 }
 
 .side-bar-item {

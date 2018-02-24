@@ -40,13 +40,23 @@ $(document).on('keyup', '.new-category', function (e) {
     // $(".new-category").removeClass('new-category');
 });
 
-$(document).on('click', '.category-budget-span', function() {
-
-	console.log('in the removal of hidden function');
-	$('.category-budget-span').addClass('hidden');
-	$('.category-row-budgeted-input').removeClass('hidden');
-
+$(document).on('click', '.category-budget-span', function(e) {
+	console.log(e.target);
+	console.log(e.target.parentElement);
+	console.log(e.target.parentElement.childNodes[0]);
+	$(e.target).addClass('hidden');
+	$(e.target.parentElement.childNodes[0]).removeClass('hidden');
 });
+
+$(document).on('click', '.transaction-table-category' , function(e) {
+	//console.log('in the removal of hidden function for transactions-category (tp.js line 50)');
+	//console.log(e.target.parentElement.childNodes[0]);
+	// console.log(e.target);
+	// console.log(e.target.parentElement.childNodes[2]);
+	$(e.target).addClass('hidden');
+	$(e.target.parentElement.childNodes[2]).removeClass('hidden');
+});
+
 
 // UPDATE BUDGET OF CATEGORY ON ENTER
 $(document).on('keydown', '.category-row-budgeted-input', function (e) {
@@ -65,7 +75,10 @@ $(document).on('keydown', '.category-row-budgeted-input', function (e) {
 			  type: "PUT",
 			  url: url,
 			  data: { budgeted: budgetValue}, 
-			  dataType: 'json',		
+			  dataType: 'json',	
+			  success: function() {
+			  	location.reload();
+			  }	
 		 }); // end of ajax call  
 	}
 });
@@ -111,7 +124,10 @@ $('.category-dropdown').change(function() {
 			  	var url = 'api/categories/';
 			  	$.ajax({
 			  		type: 'PUT',
-			  		url: url
+			  		url: url,
+			  		success: function() {
+			  			location.reload()
+			  		} // end of second success
 			  	})
 			  } // end of success
 

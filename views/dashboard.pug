@@ -1,43 +1,77 @@
 extends layout
 
 block content
+	.row
+		header.col-12 
+			.brand-heading Chrysalis
+		.side-bar.col-3 
+			div.side-bar-links
+					a.side-bar-item(href='/transactions') Go to Transactions
+					a.side-bar-item(href='/faq') Questions? Go to FAQ.
+		.col-75 
+			div.create-bar 
+				button.create-category-button(
+					type='button' 
+					onclick="addCategoryRow()") Create a Category
+			table.budget-table
+				tr
+					th Category
+					th Budgeted
+					th Activity 
+							
+					th Available
+							
+				each category in categories
+					tr(data-id=category._id).category-row
 
-	header 
-		.brand-heading Chrysalis
+						td(contenteditable='true' type='text') #{category.categoryName}
+							
+
+						td.budget-table-category
+							input(type='text' class='category-row-budgeted-input hidden') 
+							span.category-budget-span #{category.budgeted}
+						td #{category.activity}
+							//- (input(type='text')
+							//- contenteditable='true'
+							//- onClick(giveTransactionid(#{transaction._id})))
+						td #{category.available}
+	//- header 
+	//- 	.brand-heading Chrysalis
 
 
-	section.dashboard-main
-		div.side-bar
-			a.side-bar-item(href='/transactions') Go to Transactions
-			a.side-bar-item(href='/faq') Questions? Go to FAQ.
-		div.create-bar 
-			button.create-category-button(
-				type='button' 
-				onclick="addCategoryRow()") Create a Category
-		//- this will just add a blank row to the table, and that row will be editable
+	//- section.dashboard-main
+	//- 	div.side-bar.col-3
+	//- 		div.side-bar-links
+	//- 			a.side-bar-item(href='/transactions') Go to Transactions
+	//- 			a.side-bar-item(href='/faq') Questions? Go to FAQ.
+	//- 	div.main-budget-table-section		
+	//- 		div.create-bar 
+	//- 			button.create-category-button(
+	//- 				type='button' 
+	//- 				onclick="addCategoryRow()") Create a Category
 
-		//- FIRST: for each category, get the budget, activity, available
-		table.budget-table
-			tr
-				th Category
-				th Budgeted
-				th Activity 
-							//- the sum of all transactions in that month with that category
-				th Available
-							//-    == budgeted - activity
-			each category in categories
-				tr(data-id=category._id).category-row
+	//- 		table.budget-table
+	//- 			tr
+	//- 				th Category
+	//- 				th Budgeted
+	//- 				th Activity 
+							
+	//- 				th Available
+							
+	//- 			each category in categories
+	//- 				tr(data-id=category._id).category-row
 
-					td(contenteditable='true' type='text') #{category.categoryName}
-						//- ultimately this should be editable and allow for a category PUT
-					td
-						input(type='text' class='category-row-budgeted-input hidden') 
-						span.category-budget-span #{category.budgeted}
-					td #{category.activity}
-					//- (input(type='text')
-					//- 	contenteditable='true'
-					//- 	onClick(giveTransactionid(#{transaction._id}))) 
-					td #{category.available}
+	//- 					td(contenteditable='true' type='text') #{category.categoryName}
+							
+
+	//- 					td.budget-table-category
+	//- 						input(type='text' class='category-row-budgeted-input hidden') 
+	//- 						span.category-budget-span #{category.budgeted}
+	//- 					td #{category.activity}
+	//- 					(input(type='text')
+	//- 						contenteditable='true'
+	//- 						onClick(giveTransactionid(#{transaction._id}))) 
+	//- 					td #{category.available}
 					
 
 	script(src='http://code.jquery.com/jquery-3.3.1.js', integrity='sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=', crossorigin='anonymous')
