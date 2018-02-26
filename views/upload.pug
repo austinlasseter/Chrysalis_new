@@ -9,6 +9,8 @@ block content
 				a.side-bar-item(href='/dashboard') Back to Budget
 				a.side-bar-item(href='/faq') Questions? Go to FAQ.
 		section.upload.col-75
+			div.create-bar 
+				div.bold.white Upload
 			form(action='/upload', enctype='multipart/form-data', method='post')
 				p Choose a file to upload (make sure the file has the standard formatting - if you have questions on this please refer to the FAQ section).
 				input#upload-input(type='file', name='csvFile', accept='*.csv')
