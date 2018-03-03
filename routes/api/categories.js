@@ -13,9 +13,13 @@ router.post('/', jsonParser, (req, res) => {
   console.log('we are in the create new category post');
   req.user.categories.push(req.body);
   req.user.save(function (err) {
-    if (err) console.log(err);
-        })
-res.status(201);
+    if (err) {console.log(err);
+        } 
+    else {
+          res.send(req.user);
+          // res.send(201);
+  }
+})
 }) //end of new category POST
 
 

@@ -133,7 +133,7 @@ router.post('/upload', type, function(req, res) {
     oneRow.description = data['Description'];
     oneRow.debit = data['Debit'];
     oneRow.credit = data['Credit'];
-    oneRow.balance = data['Balance_anon'];
+    oneRow.balance = data['Balance'];
     oneRow.category = 'uncategorized';
 
     console.log('here are the pre upload transactions:');

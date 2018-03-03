@@ -6,6 +6,10 @@ body {
   
 }
 
+.faq-main a {
+ color: black;
+transition: all ease-in-out 200ms;
+}
 a {
   color: white;
   transition: all ease-in-out 200ms;

@@ -16,7 +16,7 @@ function addCategoryRow() {
 };
 
 
-$(document).on('keyup', '.new-category', function (e) {
+$(document).on('keydown', '.new-category', function (e) {
 	// for the dashboard page
 	// this creates a new category (for that user) with a categoryName and 0's for all other fields
 	console.log($('.new-category').val());
@@ -33,6 +33,11 @@ $(document).on('keyup', '.new-category', function (e) {
 			  activity: 0,
 			  available: 0}, //or e.target.value
 			  dataType: 'json',
+			  success: function() {
+			  	location.reload();
+			  	console.log('the success callback ran');
+			  }	
+
 		});        
     }
     // $(".new-category-row").addClass('category-row');
